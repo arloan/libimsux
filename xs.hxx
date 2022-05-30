@@ -12,6 +12,10 @@
 #include <stdarg.h>
 #include <string>
 
+#ifndef IMSUX_XSBUFF_LEN
+#define IMSUX_XSBUFF_LEN  2048
+#endif//IMSUX_XSBUFF_LEN
+
 namespace imsux {
 
 struct xs
@@ -21,12 +25,15 @@ struct xs
 		memcpy(buffer, x.buffer, sizeof(buffer));
 	}
 	xs(const std::string & s) : s(buffer) {
-		n = s.length();
+		n = (int)s.length();
 		memcpy(buffer, s.c_str(), n+1);
 	}
 	xs(const char * format, ...) : s(buffer) {
 		va_list vl;
 		va_start(vl, format);
+#if __STDC_VERSION__ >= 199901L
+        n = vsnprintf(buffer, IMSUX_XSBUFF_LEN, format, vl);
+#endif
 		n = vsprintf(buffer, format, vl);
 		va_end(vl);
 	}
@@ -63,7 +70,7 @@ struct xs
 
 	int n;
 	const char * s;
-	char buffer[1024];
+	char buffer[IMSUX_XSBUFF_LEN];
 };
 
 } // namespace imsux

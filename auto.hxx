@@ -253,6 +253,8 @@ public:
 	bool operator == (const this_type & ptr) const { return m_ptr == ptr.m_ptr; }
 	bool operator != (const T * ptr) const { return !((*this) == ptr); }
 	bool operator != (const this_type & ptr) const { return !((*this) == ptr); }
+    
+    bool isNull() const { return m_ptr == NULL; }
 
 	operator T * () { return m_ptr; }
 	operator const T * () const { return m_ptr; }

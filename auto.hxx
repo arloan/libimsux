@@ -111,8 +111,8 @@ public:
 	operator const T * () const { return m_ptr; }
 	T * operator -> () { return m_ptr; }
 	const T * operator -> () const { return m_ptr; }
-	T & operator [] (int index) { return m_ptr[index]; }
-	const T & operator [] (int index) const { return m_ptr[index]; }
+	T & operator [] (size_t index) { return m_ptr[index]; }
+	const T & operator [] (size_t index) const { return m_ptr[index]; }
 	T & operator * () { return * m_ptr; }
 	const T & operator * () const { return * (const T*)m_ptr; }
 	T * get() { return m_ptr; }
@@ -260,8 +260,8 @@ public:
 	operator const T * () const { return m_ptr; }
 	T * operator -> () { return m_ptr; }
 	const T * operator -> () const { return m_ptr; }
-	T & operator [] (int index) { return m_ptr[index]; }
-	const T & operator [] (int index) const { return m_ptr[index]; }
+	T & operator [] (size_t index) { return m_ptr[index]; }
+	const T & operator [] (size_t index) const { return m_ptr[index]; }
 	T & operator * () { return * m_ptr; }
 	const T & operator * () const { return * m_ptr; }
 	T * get() { return m_ptr; }

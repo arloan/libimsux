@@ -14,7 +14,11 @@
 #include "lock.hxx"
 #include "auto.hxx"
 #include "errno_error.hxx"
+#include "comma_sep.hxx"
+#include "stop_watch.hxx"
+#ifdef _WINDOWS
 #include "win32_error.hxx"
+#endif//_WINDOWS
 
 #define IMSUX_USE_NS	using namespace imsux;
 

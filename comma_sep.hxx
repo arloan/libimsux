@@ -39,7 +39,7 @@ public:
 	}
 
 	const char * sep() {
-		return _sep(std::abs(i));
+		return _sep(i > 0 ? i : i * -1);
 	}
 private:
 	const char * _sep(I i) {
@@ -66,7 +66,7 @@ public:
 	const int max_frac = 12;
 	comma_sep(double d, char c = ',') : _cs((int64_t)d, c) {
         double np;
-		f = std::abs(modf(d, &np));
+		f = fabs(modf(d, &np));
 	}
 	const char * sep(int frac = 3) {
 		if (frac < 1 || frac > max_frac) {

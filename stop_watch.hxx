@@ -55,6 +55,7 @@ public:
 		double ellapsed = eus / 1000000.0;
 		return tickv {ellapsed, fracs, secs, usecs};
 	}
+    
 private:
 	timeval tv;
 	static stop_watch & instance__() {
@@ -62,11 +63,6 @@ private:
 		return sw__;
 	}
 };
-
-////////////////////////////////////////////////////////////
-// usage:
-// cout << comma_sep(-2439009706097096, '_').sep() << endl;
-////////////////////////////////////////////////////////////
 
 }
 

@@ -126,13 +126,8 @@ public:
     };
 
 public:
-    logger(int logLevel = LSV_TRACE, const std::string & logFile = "", rotation policy = as_is)
-        : mFile(NULL)
-        , mLevel(logLevel)
-        , mPolicy(policy)
+    logger() : mFile(NULL)
     {
-        if (logFile.length() != 0) SetLogName(logFile);
-        if (policy == fixed_size) throw std::invalid_argument("rotation policy `fixed_size` not implemented");
         mTermColorful = TermColorful();
 
         #ifdef _WIN32
@@ -146,6 +141,21 @@ public:
         #endif//_WIN32
 
         InitializeCriticalSection(&mLock);
+    }
+
+    ~logger()
+    {
+        RestoreConsoleAttr();
+        DeleteCriticalSection(&mLock);
+    }
+
+    void setup(int logLevel = LSV_TRACE, const std::string & logFile = "", rotation policy = as_is)
+    {
+        if (logFile.length() != 0) SetLogName(logFile);
+        if (policy == fixed_size) throw std::invalid_argument("rotation policy `fixed_size` not implemented");
+
+        mLevel = logLevel;
+        mPolicy = policy;
         char * overrideSev = getenv("IMSLOG_SEVERITY");
         if (overrideSev != NULL)
         {
@@ -158,21 +168,13 @@ public:
         }
     }
 
-    ~logger()
-    {
-        RestoreConsoleAttr();
-        DeleteCriticalSection(&mLock);
-    }
-
     #ifndef _WIN32
     static inline bool TermColorful()
     {
-        static bool colorful = 
-            strncmp(getenv("TERM"), "xterm", 5) == 0
-            ||
-            strcmp(getenv("TERM"), "rxvt" ) == 0
-            ||
-            strcmp(getenv("TERM"), "linux") == 0;
+        static bool colorful = getenv("TERM")
+            &&(strncmp(getenv("TERM"), "xterm", 5) == 0
+            || strcmp (getenv("TERM"), "rxvt" ) == 0
+            || strcmp (getenv("TERM"), "linux") == 0);
         
         return colorful;
     }
@@ -343,8 +345,8 @@ public:
             throw errno_error(xs("CreateDirectory('%s') failed: ", mLogDir.c_str()).s);
         }
 
-        printf("LogBaseName: %s%s\n", mBaseName.c_str(), mBaseExt.c_str());
-        printf("LogDir: %s\n", mLogDir.c_str());
+        // printf("LogBaseName: %s%s\n", mBaseName.c_str(), mBaseExt.c_str());
+        // printf("LogDir: %s\n", mLogDir.c_str());
     }
 
 private:

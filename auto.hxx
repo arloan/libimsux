@@ -45,7 +45,7 @@ struct HeapDestroier
 
 #endif /* _WIN32 */
 
-
+struct file_dtor { void operator () (FILE * f) { if (f) fclose(f); } };
 struct malloc_dtor { inline void operator () (void * p) { free(p); } };
 
 template <class T>
@@ -106,6 +106,8 @@ public:
 	bool operator == (const this_type & ptr) const { return m_ptr == ptr.m_ptr; }
 	bool operator != (const T * ptr) const { return !((*this) == ptr); }
 	bool operator != (const this_type & ptr) const { return !((*this) == ptr); }
+
+	bool is_null() const { return m_ptr == NULL; }
 
 	operator T * () { return m_ptr; }
 	operator const T * () const { return m_ptr; }
@@ -254,7 +256,7 @@ public:
 	bool operator != (const T * ptr) const { return !((*this) == ptr); }
 	bool operator != (const this_type & ptr) const { return !((*this) == ptr); }
     
-    bool isNull() const { return m_ptr == NULL; }
+    bool is_null() const { return m_ptr == NULL; }
 
 	operator T * () { return m_ptr; }
 	operator const T * () const { return m_ptr; }

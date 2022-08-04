@@ -6,7 +6,7 @@
 #endif//__cplusplus
 
 #ifndef IMSUX_VER
-#define IMSUX_VER 0x0100
+#define IMSUX_VER 0x0101
 #endif//IMSUX_VER
 
 #include "xs.hxx"

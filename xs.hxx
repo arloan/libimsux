@@ -13,11 +13,12 @@
 #include <string>
 
 #ifndef IMSUX_XSBUFF_LEN
-#define IMSUX_XSBUFF_LEN  2048
+#define IMSUX_XSBUFF_LEN  1024
 #endif//IMSUX_XSBUFF_LEN
 
 namespace imsux {
 
+template<int BS=IMSUX_XSBUFF_LEN>
 struct xs
 {
 	xs(const xs & x) : s(buffer) {
@@ -32,7 +33,7 @@ struct xs
 		va_list vl;
 		va_start(vl, format);
 #if __STDC_VERSION__ >= 199901L
-        n = vsnprintf(buffer, IMSUX_XSBUFF_LEN, format, vl);
+        n = vsnprintf(buffer, BS, format, vl);
 #endif
 		n = vsprintf(buffer, format, vl);
 		va_end(vl);
@@ -70,7 +71,7 @@ struct xs
 
 	int n;
 	const char * s;
-	char buffer[IMSUX_XSBUFF_LEN];
+	char buffer[BS];
 };
 
 } // namespace imsux
